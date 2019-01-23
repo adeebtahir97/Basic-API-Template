@@ -27,8 +27,8 @@ if __name__ == '__main__':
 
 
 
-	#Let your two models be in a list model_l
-	model_l = [clf1,clf]
+	#Let your models be in a list 'model_l'
+	model_l = [clf1,clf,....]
 
 	#Pickle the models
 	pickle_out = open("testModels.pickle","wb")
