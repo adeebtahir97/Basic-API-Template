@@ -1,0 +1,69 @@
+<html>
+
+<head>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        (function($){
+            $.fn.serializeObject = function () {
+                "use strict";
+
+                var result = {};
+                var extend = function (i, element) {
+                    var node = result[element.name];
+
+            // If node with same name exists already, need to convert it to an array as it
+            // is a multi-value field (i.e., checkboxes)
+
+                    if ('undefined' !== typeof node && node !== null) {
+                        if ($.isArray(node)) {
+                            node.push(element.value);
+                    } else {
+                            result[element.name] = [node, element.value];
+                        }
+                    } else {
+                        result[element.name] = element.value;
+                    }
+                };
+
+                $.each(this.serializeArray(), extend);
+                return result;
+            };
+        })(jQuery);
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("form").on('submit', function (event) {
+                $('#response').text('');
+                var jsonData = JSON.stringify($('.inputForm').serializeObject());
+                console.log(jsonData)
+                alert(jsonData)
+                $.ajax({                    
+                    data: jsonData,
+                    type: 'POST',
+                    url: '/predict',
+                    contentType:'application/json',                    
+                    success: function (data) {
+                        var obj = JSON.parse(data)                        
+                        $('#response').text(obj.response);
+                    }
+                });
+                event.preventDefault();
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="topBanner">Prediction API Inputs</div>
+    <div style="padding:5px">
+        <form class="inputForm">
+            <p>InputVal <input type="text" size="15" name="InputVal" id="InputVal" /></p>        
+            <p><button class="btn btn-success" type="submit">Train</button></p>
+        </form>
+    </div>
+    <p id="response"></div>
+</body>
+
+</html>
