@@ -18,18 +18,18 @@ def predict():
 
     #get the data in json sent as input to this API
     content = request.get_json()
-    inputVal = int(content["InputVal"]) #Explicitly keep it as int(coz in your case the inputs are numeric...)    
+    inputVal = int(content["InputVal"]) #Explicitly cast it to whatever dataType you require 
 
 
     #Load the models
     with open("testModels.pickle","rb") as pickle_in:
         model_l = pickle.load(pickle_in)
 
-    #Perform prediction
-    prediction1 = model_l[0].predict(inputVal)
-    prediction2 = model_l[1].predict(inputVal)
+    #Perform prediction(sample shown below)
+    prediction1 = model_l[0].predict(inputVal) #With 1st model
+    prediction2 = model_l[1].predict(inputVal) #With 2nd model ....and so on 
 
-    #Do the aggregation of predictions
+    #Do the aggregation of predictions(If required)
     pred = prediction1*0.3 + prediction2*0.4 #I've just put random weights..change them to your needs
     print(pred) #This is just to see the prediction on the terminal
 
